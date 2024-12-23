@@ -11,9 +11,9 @@ from sqlalchemy.engine import Result
 
 
 async def GetOwnPost(
-    db: AsyncSession, get_post_create: get_user_schema.get_post_Create
+    db: AsyncSession, get_own_post: get_user_schema.GetOwnPost
 ) -> get_user_model.GetOwnPost:
-    test = get_user_model.GetOwnPost(**get_post_create.dict())
+    test = get_user_model.GetOwnPost(**get_own_post.dict())
     db.add(test)
     await db.commit()
     await db.refresh(test)
