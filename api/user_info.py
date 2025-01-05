@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Depends, Path, HTTPException
 import api.models.models as models
 from fastapi.middleware.cors import CORSMiddleware
-# import api.cruds.get_user as handle_db
 import api.cruds.user_info as handle_db
 import datetime
 
@@ -17,9 +16,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 一旦放置
+# InsertIcon
+# GetIcon
+# ChangeIcon
+# DeleteIcon
+
 ## UserRegister
 @app.post(path="/register")
-async def UserRegister(user_name: str, user_email: str, user_password: str, user_comment: str):
+async def post_user(user_name: str, user_email: str, user_password: str, user_comment: str):
     ## GetCheckEmailDuplication
     result = await handle_db.GetCheckEmailDuplication(user_email)
     if result == 0:
@@ -37,18 +42,19 @@ async def UserRegister(user_name: str, user_email: str, user_password: str, user
 ## UserLogin
 ## GetConfirmConbination
 @app.get(path="/login")
-async def GetConfirmConbination(user_email: str, user_password: str):
+async def get_user(user_email: str, user_password: str):
     result = handle_db.GetConfirmConbination(user_email, user_password)
     if result == 1:
-        raise HTTPException(status_code=404, detail="No Account")
+        raise HTTPException(status_code=404, detail="Query Error!!")
     return {
         "status": "OK",
         "data": result
     }
 
+
 ## GetConfirmChangeUserEmail
-@app.get(path="/users/{user_id}")
-async def GetConfirmChangeUserEmail(user_id: str, user_email: str, new_user_email: str, user_password: str):
+@app.get(path="/users/email/{user_id}")
+async def get_user(user_id: str, user_email: str, new_user_email: str, user_password: str):
     ## GetCheckEmailDuplication
     result = await handle_db.GetConfirmConbination(user_email, user_password) 
     if result == user_id:
@@ -61,11 +67,12 @@ async def GetConfirmChangeUserEmail(user_id: str, user_email: str, new_user_emai
             "data": result
         }
     else:
-        raise HTTPException(status_code=409, detail="No Account.")
+        raise HTTPException(status_code=409, detail="No Account.")  
+
 
 ## GetPetInfo
 @app.get(path="/api/users/info/{user_id}")
-async def GetPetInfo(user_id: str):
+async def get_user(user_id: str):
     result = handle_db.GetPetInfo(user_id)
     if result == 1:
         raise HTTPException(status_code=404, detail="Query Error!!")
@@ -84,46 +91,45 @@ async def get_list_user():
         "data": result
     }
 
-# ## create user
-# @app.post(path="/api/users")
-# async def post_user(user_name: str, user_mail: str):
-#     result = handle_db.create_user(user_name, user_mail)
-#     if result == 1:
-#         raise HTTPException(status_code=404, detail="Query Error!!")
-#     return {
-#         "status": "OK",
-#         "data": result
-#     }
 
-# ## select user
-# @app.get(path="/api/users/{user_id}")
-# async def get_user(user_id: str):
-#     result = handle_db.select_user(user_id)
-#     if result == 1:
-#         raise HTTPException(status_code=404, detail="Query Error!!")
-#     return {
-#         "status": "OK",
-#         "data": result
-#     }
 
-# ## update user 
-# @app.put(path="/api/users/{user_id}")
-# async def put_user(user_id: str, user_name: str, user_mail: str, user_status: str):
-#     result = handle_db.update_user(user_id, user_name, user_mail, user_status)
-#     if result == 1:
-#         raise HTTPException(status_code=404, detail="Query Error!!")
-#     return {
-#         "status": "OK",
-#         "data": result
-#     }
 
-# ## delete user 
-# @app.delete(path="/api/users/{user_id}")
-# async def delete_user(user_id: str):
-#     result = handle_db.delete_user(user_id)
-#     if result == 1:
-#         raise HTTPException(status_code=404, detail="Query Error!!")
-#     return {
-#         "status": "OK",
-#         "data": result
-#     }
+## update user 
+@app.put(path="/api/users/{user_id}")
+async def put_user(user_id: str, user_name: str, user_mail: str, user_status: str):
+    result = handle_db.update_user(user_id, user_name, user_mail, user_status)
+    if result == 1:
+        raise HTTPException(status_code=404, detail="Query Error!!")
+    return {
+        "status": "OK",
+        "data": result
+    }
+
+## delete user 
+@app.delete(path="/api/users/{user_id}")
+async def delete_user(user_id: str):
+    result = handle_db.delete_user(user_id)
+    if result == 1:
+        raise HTTPException(status_code=404, detail="Query Error!!")
+    return {
+        "status": "OK",
+        "data": result
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+# ChangePetInfo
+# ChangeUserPass
+# ChangeUserEmail
+
+
+# DeleteUserAccount

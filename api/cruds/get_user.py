@@ -1,5 +1,5 @@
-# # あらゆる操作
-# # routersのみで呼び出される
+# あらゆる操作
+# routersのみで呼び出される
 
 import sys
 import api.models.models as models
