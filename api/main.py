@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, Path, HTTPException
-import api.models.user as models
+import api.models.models as models
 from fastapi.middleware.cors import CORSMiddleware
 import api.cruds.get_user as handle_db
 import datetime
