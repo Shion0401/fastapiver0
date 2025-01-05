@@ -16,7 +16,7 @@ class GetPost(GetPost_Base):
     class Config:
         orm_mode = True
 
-# # 作成
+# 作成
 # class GetOwnPost_Create(GetOwnPost_Base):
 #     pass
 

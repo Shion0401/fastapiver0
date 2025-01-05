@@ -1,16 +1,13 @@
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy import create_engine
+import sys
+from sqlalchemy.orm import (sessionmaker, relationship, scoped_session)
 
-ASYNC_DB_URL = "mysql+aiomysql://root@db:3306/demo?charset=utf8"
+sys.dont_write_bytecode = True
 
-async_engine = create_async_engine(ASYNC_DB_URL, echo=True)
-async_session = sessionmaker(
-    autocommit=False, autoflush=False, bind=async_engine, class_=AsyncSession
-)
+#setting db connection
+url = "mysql+pymysql://root@db:3306/fastapi?charset=utf8"
+engine = create_engine(url, echo=False, pool_recycle=10)
 
-Base = declarative_base()
-
-
-async def get_db():
-    async with async_session() as session:
-        yield session
+#create session
+def create_new_session():
+    return  scoped_session(sessionmaker(autocommit=False, autoflush=True, expire_on_commit=False, bind=engine))
