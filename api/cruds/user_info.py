@@ -29,7 +29,6 @@ async def GetCheckEmailDuplication(user_email):
     if user == None:
         return 0
 
-## UserLogin
 ## GetConfirmConbination
 async def GetConfirmConbination(user_email, user_password):
     session = databases.create_new_session()
@@ -54,6 +53,58 @@ def GetPetInfo(user_id):
     return user.name, user.comment
 
 
+## ChangeUserEmail
+async def ChangeUserEmail(user_id, new_user_email):
+    session = databases.create_new_session()
+    user = session.query(models.User).\
+                filter(models.User.id == user_id).\
+                first()
+    if user == None:
+        return 1
+    user.email = new_user_email
+    session.commit()
+    return 0
+
+
+## ChangeUserPass
+async def ChangeUserPass(user_id, new_user_password):
+    session = databases.create_new_session()
+    user = session.query(models.User).\
+                filter(models.User.id == user_id).\
+                first()
+    if user == None:
+        return 1
+    user.password = new_user_password
+    session.commit()
+    return 0
+
+
+## ChangePetInfo
+def ChangePetInfo(user_id, user_name, user_comment):
+    session = databases.create_new_session()
+    user = session.query(models.User).\
+                filter(models.User.id == user_id).\
+                first()
+    if user == None:
+        return 1
+    user.name = user_name
+    user.comment = user_comment
+    session.commit()
+    return 0
+
+## DeleteUserAccount
+async def DeleteUserAccount(user_id):
+    session = databases.create_new_session()
+    user = session.query(models.User).\
+                filter(models.User.id == user_id).\
+                first()
+    if user == None:
+        return 1
+    session.delete(user)
+    session.commit()
+    return 0
+
+
 ## 確認用
 def select_all_user():
     session = databases.create_new_session()
@@ -63,38 +114,3 @@ def select_all_user():
         user_list = []
     return user_list
 
-
-
-def update_user(user_id, user_name, user_mail):
-    session = databases.create_new_session()
-    user = session.query(models.User).\
-                filter(models.User.id == user_id).\
-                first()
-    if user == None:
-        return 1
-    user.name = user_name
-    user.email = user_mail
-    session.commit()
-    return 0
-
-def delete_user(user_id):
-    session = databases.create_new_session()
-    user = session.query(models.User).\
-                filter(models.User.id == user_id).\
-                first()
-    if user == None:
-        return 1
-    session.commit()
-    return 0
-
-
-
-
-
-
-# ChangePetInfo
-# ChangeUserPass
-# ChangeUserEmail
-
-
-# DeleteUserAccount

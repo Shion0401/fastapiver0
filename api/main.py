@@ -17,6 +17,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+## 確認用select user list
+@app.get(path="/api/users")
+async def get_list_user():
+    result = handle_db.select_all_user()
+    return {
+        "status": "OK",
+        "data": result
+    }
+    
 ## UserRegister
 @app.post(path="/register")
 async def UserRegister(user_name: str, user_email: str, user_password: str, user_comment: str):
@@ -33,14 +42,13 @@ async def UserRegister(user_name: str, user_email: str, user_password: str, user
     else:
         raise HTTPException(status_code=409, detail="An account with this email already exists.")
 
-
 ## UserLogin
-## GetConfirmConbination
 @app.get(path="/login")
-async def GetConfirmConbination(user_email: str, user_password: str):
+async def UserLogin(user_email: str, user_password: str):
+    ## GetConfirmConbination
     result = handle_db.GetConfirmConbination(user_email, user_password)
     if result == 1:
-        raise HTTPException(status_code=404, detail="No Account")
+        raise HTTPException(status_code=404, detail="Query Error!!")
     return {
         "status": "OK",
         "data": result
@@ -74,16 +82,66 @@ async def GetPetInfo(user_id: str):
         "data": result
     }
 
+## ChangeUserEmail
+@app.put(path="/users/email/{user_id}")
+async def ChangeUserEmail(user_id: str, user_email: str, new_user_email: str, user_password: str):
+    ## GetConfirmChangeUserEmail
+    user_check = await GetConfirmChangeUserEmail(user_id=user_id, user_email=user_email, new_user_email=new_user_email, user_password=user_password)
+    if user_check["status"] == "OK":
+        # メールアドレス更新
+        result = await handle_db.ChangeUserEmail(user_id, new_user_email)
+        if result == 0:
+            return {
+                "status": "OK",
+                "data": result
+            }
+        else:
+            raise HTTPException(status_code=404, detail="Query Error!!")
+    raise HTTPException(status_code=409, detail="Unable to change email address")
 
-## 確認用select user list
-@app.get(path="/api/users")
-async def get_list_user():
-    result = handle_db.select_all_user()
-    return {
-        "status": "OK",
-        "data": result
-    }
+## ChangeUserPass
+@app.put(path="/users/pass/{user_id}")
+async def ChangeUserPass(user_id: str, user_email: str, user_password: str, new_user_password: str):
+    ## GetConfirmChangeUserEmail
+    user_check = await GetConfirmConbination(user_email=user_email, user_password=user_password)
+    if user_check["status"] == "OK":
+        # メールアドレス更新
+        result = await handle_db.ChangeUserPass(user_id, new_user_password)
+        if result == 0:
+            return {
+                "status": "OK",
+                "data": result
+            }
+        else:
+            raise HTTPException(status_code=404, detail="Query Error!!")
+    raise HTTPException(status_code=409, detail="Unable to change password")
 
+## ChangePetInfo
+@app.put(path="/users/info/{user_id}")
+async def ChangePetInfo(user_id: str, user_name: str, user_comment: str):
+    result = handle_db.ChangePetInfo(user_id, user_name, user_comment)
+    if result == 0:
+        return {
+            "status": "OK",
+            "data": result
+        }
+    else:
+        raise HTTPException(status_code=404, detail="Query Error!!")
+
+## DeleteUserAccount
+@app.delete(path="/users/{user_id}")
+async def DeleteUserAccount(user_id: str, user_email: str, user_password: str):
+    ## GetConfirmConbination
+    user_check = await handle_db.GetConfirmConbination(user_email=user_email, user_password=user_password)
+    if user_check == user_id:
+        result = await handle_db.DeleteUserAccount(user_id)
+        if result == 1:
+            raise HTTPException(status_code=404, detail="Query Error!!")
+        return {
+            "status": "OK",
+            "data": result
+        }
+    raise HTTPException(status_code=409, detail="no account")
 # ## create user
 # @app.post(path="/api/users")
 # async def post_user(user_name: str, user_mail: str):
