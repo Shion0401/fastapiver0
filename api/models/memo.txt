@@ -16,3 +16,18 @@ CREATE TABLE post (
     user_id CHAR(36),
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
+
+CREATE TABLE `report` (
+   `id` CHAR(36) NOT NULL PRIMARY KEY,
+   `times` INT DEFAULT 0,
+   `update_date_time` DATETIME,
+   `user_id` CHAR(36),
+   FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);
+
+CREATE TABLE `corpinfo` (
+   `id` CHAR(36) NOT NULL PRIMARY KEY,
+   `corpname` VARCHAR(30),
+   `email` VARCHAR(30),
+   `manager` VARCHAR(30)
+);

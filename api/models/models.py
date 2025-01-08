@@ -71,7 +71,6 @@ class Report(base):
         self.update_date_time = now_data_time
         
 
-
 # class Admin(base):
 #     __tablename__ = 'admin'
 #     id = Column(CHAR(36), primary_key=True)
@@ -83,14 +82,14 @@ class Report(base):
 #         self.id = str(uuid.uuid4())
         
         
-# class CorpInfo(base):
-#     __tablename__ = 'corpinfo'
-#     id = Column(CHAR(36), primary_key=True)
-#     name = Column(VARCHAR(30))
-#     email = Column(VARCHAR(30))
-#     manager = Column(VARCHAR(30))
-#     # url = Column(VARCHAR(128))
-#     # image = Column(VARCHAR(255))
+class CorpInfo(base):
+    __tablename__ = 'corpinfo'
+    id = Column(CHAR(36), primary_key=True)
+    corpname = Column(VARCHAR(30))
+    email = Column(VARCHAR(30))
+    manager = Column(VARCHAR(30))
+    # url = Column(VARCHAR(128))
+    # image = Column(VARCHAR(255))
 
-#     def __init__(self):
-#         self.id = str(uuid.uuid4())
+    def __init__(self):
+        self.id = str(uuid.uuid4())
