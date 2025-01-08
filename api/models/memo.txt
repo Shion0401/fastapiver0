@@ -7,13 +7,12 @@ CREATE TABLE `user` (
     `comment` VARCHAR(100)
 );
 
--- postテーブルの作成
-CREATE TABLE `post` (
-    `id` CHAR(36) NOT NULL PRIMARY KEY,
-    `user_id` CHAR(36) NOT NULL,
-    `title` VARCHAR(100),
-    `content` VARCHAR(1000),
-    FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+CREATE TABLE post (
+    id CHAR(36) PRIMARY KEY,
+    title VARCHAR(17),
+    caption VARCHAR(50),
+    create_date_time DATETIME,
+    goodcount INTEGER DEFAULT 0,
+    user_id CHAR(36),
+    FOREIGN KEY (user_id) REFERENCES user(id)
 );
-
-crudsに投げると楽

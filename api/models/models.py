@@ -24,28 +24,26 @@ class User(base):
     comment = Column(VARCHAR(100))
     # status = Column(VARCHAR(255))
     # image = Column(VARCHAR(255))
-    
-    # post作ったらこのコメントアウトは戻す
-    # post = relationship("Post", back_populates="user")
+    post = relationship("Post", back_populates="user")
 
     def __init__(self):
         self.id = str(uuid.uuid4())
         
         
-# class Post(base):
-#     __tablename__ = 'post'
-#     id = Column(CHAR(36), primary_key=True)
-#     title = Column(VARCHAR(17))
-#     caption = Column(VARCHAR(50))
-#     create_date_time = Column(DATETIME)
-#     # image = Column(VARCHAR(255))
-#     user_id = Column(INT, ForeignKey("user.id"))
-#     user = relationship("User", back_populates="post")
+class Post(base):
+    __tablename__ = 'post'
+    id = Column(CHAR(36), primary_key=True)
+    title = Column(VARCHAR(17))
+    caption = Column(VARCHAR(50))
+    create_date_time = Column(DATETIME)
+    goodcount = Column(INT, default=0)
+    user_id = Column(CHAR(36), ForeignKey("user.id"))  # 型を一致させる
+    user = relationship("User", back_populates="post")
 
-#     def __init__(self):
-#         self.id = str(uuid.uuid4())
-#         now_data_time = str(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
-#         self.create_date_time = now_data_time
+    def __init__(self):
+        self.id = str(uuid.uuid4())
+        now_data_time = str(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
+        self.create_date_time = now_data_time
        
         
 # class Followlist(base):
