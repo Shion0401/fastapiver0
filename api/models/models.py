@@ -71,15 +71,15 @@ class Report(base):
         self.update_date_time = now_data_time
         
 
-# class Admin(base):
-#     __tablename__ = 'admin'
-#     id = Column(CHAR(36), primary_key=True)
-#     name = Column(VARCHAR(10))
-#     email = Column(VARCHAR(30))
-#     password = Column(VARCHAR(64))
+class Admin(base):
+    __tablename__ = 'admin'
+    id = Column(CHAR(36), primary_key=True)
+    name = Column(VARCHAR(10))
+    email = Column(VARCHAR(30))
+    password = Column(VARCHAR(64))
 
-#     def __init__(self):
-#         self.id = str(uuid.uuid4())
+    def __init__(self):
+        self.id = str(uuid.uuid4())
         
         
 class CorpInfo(base):

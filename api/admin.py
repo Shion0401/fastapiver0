@@ -1,3 +1,6 @@
+# swaggerでデバッグしてませんごめんなさい
+# 通報されてないんですx
+
 from fastapi import FastAPI, Depends, Path, HTTPException
 import api.models.models as models
 from fastapi.middleware.cors import CORSMiddleware
