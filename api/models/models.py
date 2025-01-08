@@ -25,6 +25,7 @@ class User(base):
     # status = Column(VARCHAR(255))
     # image = Column(VARCHAR(255))
     post = relationship("Post", back_populates="user")
+    report = relationship("Report", back_populates="user")
 
     def __init__(self):
         self.id = str(uuid.uuid4())
@@ -56,18 +57,18 @@ class Post(base):
 #         self.id = str(uuid.uuid4())
         
         
-# class Report(base):
-#     __tablename__ = 'report'    
-#     id = Column(CHAR(36), primary_key=True)
-#     times = Column(INT(10))
-#     update_date_time = Column(DATETIME)
-#     user_id = Column(INT, ForeignKey("user.id"))
-#     user = relationship("User", back_populates="post")
+class Report(base):
+    __tablename__ = 'report'    
+    id = Column(CHAR(36), primary_key=True)
+    times = Column(INT, default=0)
+    update_date_time = Column(DATETIME)
+    user_id = Column(CHAR(36), ForeignKey("user.id"))
+    user = relationship("User", back_populates="report")
 
-#     def __init__(self):
-#         self.id = str(uuid.uuid4())
-#         now_data_time = str(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
-#         self.update_date_time = now_data_time
+    def __init__(self):
+        self.id = str(uuid.uuid4())
+        now_data_time = str(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
+        self.update_date_time = now_data_time
         
 
 

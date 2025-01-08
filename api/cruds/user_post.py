@@ -31,17 +31,16 @@ def GetOnesPost(user_id):
     return post
     
 ## GetNewPost
-# def GetNewPost():
-#     session = databases.create_new_session()
-#     result = session.query(models.Post).\
-#                 order_by(models.Post.create_date_time.desc()).\
-#                 limit(20).\
-#                 all()     
-#     print("Hello")
-#     print(result)
-#     # if not result:  # 空リストの場合も処理
-#     #     return []  # 空のリストを返す
-#     return result
+def GetNewPost():
+    session = databases.create_new_session()
+    result = session.query(models.Post).\
+                order_by(models.Post.create_date_time.desc()).\
+                limit(20).\
+                all()     
+    print(result)
+    # if not result:  # 空リストの場合も処理
+    #     return []  # 空のリストを返す
+    return result
 
 ## DeletePost
 def DeletePost(user_id, post_id):
