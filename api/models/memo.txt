@@ -31,3 +31,16 @@ CREATE TABLE `corpinfo` (
    `email` VARCHAR(30),
    `manager` VARCHAR(30)
 );
+
+CREATE TABLE `followlist` (
+    `following` CHAR(36) NOT NULL,
+    `followed` CHAR(36) NOT NULL,
+    PRIMARY KEY (`following`, `followed`),
+    FOREIGN KEY (`following`) REFERENCES `user` (`id`),
+    FOREIGN KEY (`followed`) REFERENCES `user` (`id`)
+);
+
+
+54687bb1-2606-4b66-9ebc-b9aeeac27b35
+7df7c8b5-20c6-49c8-a9c3-20558e0cfd51
+fda424fd-efd9-4796-9c19-fd6eaff75619
