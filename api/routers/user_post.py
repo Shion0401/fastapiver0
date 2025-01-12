@@ -23,7 +23,7 @@ app.add_middleware(
 # GetPostImage
 
 ## Post
-@router.post(path="user_post/post")
+@router.post(path="/user_post/post")
 async def Post(user_id: str, title: str, caption: str):
     result = handle_db.Post(user_id, title, caption)
     if result == 0:
@@ -35,7 +35,7 @@ async def Post(user_id: str, title: str, caption: str):
    
 
 ## GetOnesPost
-@router.get(path="user_post/post/get/{user_id}")
+@router.get(path="/user_post/post/get/{user_id}")
 async def GetOnesPost(user_id: str):
     result = handle_db.GetOnesPost(user_id)
     if result == 1:
@@ -47,7 +47,7 @@ async def GetOnesPost(user_id: str):
 
     
 ## GetNewPost p13
-@router.get(path="user_post/post/new")
+@router.get(path="/user_post/post/new")
 async def GetNewPost():
     result = handle_db.GetNewPost()
     if not result:  # 空のリストやNoneの場合
@@ -59,7 +59,7 @@ async def GetNewPost():
 
 
 ## DeletePost 
-@router.delete(path="user_post/post/{user_id}/{post_id}")
+@router.delete(path="/user_post/post/{user_id}/{post_id}")
 async def DeletePost(user_id: str, post_id: str):
     result = handle_db.DeletePost(user_id, post_id)
     if result == 1:
@@ -71,7 +71,7 @@ async def DeletePost(user_id: str, post_id: str):
     
 
 # GoodCount
-@router.get(path="user_post/post/goodcount/{post_id}")
+@router.get(path="/user_post/post/goodcount/{post_id}")
 async def GoodCount(post_id: str):
     print("post")
     result = await handle_db.GoodCount(post_id)
@@ -84,7 +84,7 @@ async def GoodCount(post_id: str):
     
 
 ## Good
-@router.put(path="user_post/post/good/{post_id}")
+@router.put(path="/user_post/post/good/{post_id}")
 async def Good(post_id: str):
     result = await handle_db.GoodCount(post_id)
     if result == -1:

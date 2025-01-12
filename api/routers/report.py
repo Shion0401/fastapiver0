@@ -17,7 +17,7 @@ app.add_middleware(
 )
 
 ## GetReport
-@router.get(path="report/report/count/{user_id}")
+@router.get(path="/report/report/count/{user_id}")
 async def GetReport(user_id: str):
     result = await handle_db.GetReport(user_id)
     return {
@@ -27,7 +27,7 @@ async def GetReport(user_id: str):
     
 
 ## Insert&UpdateReport
-@router.put(path="report/report/count/{user_id}")
+@router.put(path="/report/report/count/{user_id}")
 async def InsertUpdateReport(user_id: str):
     result = await handle_db.GetReport(user_id)
     if result == 'None':
@@ -43,7 +43,7 @@ async def InsertUpdateReport(user_id: str):
 
 
 ## ExclusionViolationUser
-@router.delete(path="report/post/exclusive/{user_id}")
+@router.delete(path="/report/post/exclusive/{user_id}")
 async def ExclusionViolationUser(user_id: str):
     result = handle_db.DeleteReport(user_id)
     if result == -1:

@@ -19,7 +19,7 @@ app.add_middleware(
 
 
 ## Follow & UnFollow
-@app.post(path="follow")
+@app.post(path="/follow")
 async def Follow(following: str, followed: str):
     check = await handle_db.GetConfirmConbination(following, followed)
     if check == "None":
@@ -32,7 +32,7 @@ async def Follow(following: str, followed: str):
     }
 
 ## GetFollow フォローリストをとってくる
-@app.get(path="follow/{user_id}")
+@app.get(path="/follow/{user_id}")
 async def GetFollow(user_id: str):
     result = await handle_db.GetFollow(user_id)
     if result == -1:
