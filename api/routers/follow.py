@@ -2,6 +2,7 @@ from fastapi import APIRouter, FastAPI, Depends, Path, HTTPException
 import api.models.models as models
 from fastapi.middleware.cors import CORSMiddleware
 import api.cruds.follow as handle_db
+import api.cruds.images as image_db
 import datetime
 
 app = FastAPI()
@@ -16,36 +17,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-
 ## Follow & UnFollow
-@app.post(path="/follow")
+@router.post(path="/follow")
 async def Follow(following: str, followed: str):
     check = await handle_db.GetConfirmConbination(following, followed)
     if check == "None":
         result = await handle_db.Follow(following, followed)
+    elif check == -1:
+        return -1
     else:
         result = await handle_db.ChangeFlag(following, followed, check)
-    return {
-        "status": "OK",
-        "data": result
-    }
+    return result
 
 ## GetFollow フォローリストをとってくる
-@app.get(path="/follow/{user_id}")
+@router.get(path="/follow/{user_id}")
 async def GetFollow(user_id: str):
     result = await handle_db.GetFollow(user_id)
-    if result == -1:
-        raise HTTPException(status_code=404, detail="Query Error!!")
-    return {
-        "status": "OK",
-        "data": result
-    }
+    # result = await GetPetInfo(result)
+    return result
     
-
-##GetFollowInfo = GetPetInfoでいける
-
-
-
-    
-

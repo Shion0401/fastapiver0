@@ -11,6 +11,14 @@ sys.dont_write_bytecode = True
 ## GetConfirmConbination
 async def GetConfirmConbination(following, followed):
     session = databases.create_new_session()
+    user_exists = session.query(models.User).\
+                    filter(models.User.id == following).\
+                    first()
+    follow_exists = session.query(models.User).\
+                    filter(models.User.id == followed).\
+                    first()
+    if not user_exists or not follow_exists:
+        return -1
     follow = session.query(models.Followlist).\
                 filter(models.Followlist.following == following, 
                        models.Followlist.followed == followed).\
@@ -31,7 +39,7 @@ async def Follow(following, followed):
     session.commit()
     return 0
 
-## ChangeFlag
+## ChangeFlag（0:フォロー解除中, 1:フォロー中）
 async def ChangeFlag(following, followed, check):
     session = databases.create_new_session()
     follow = session.query(models.Followlist).\
@@ -45,7 +53,7 @@ async def ChangeFlag(following, followed, check):
     elif check == 1:
         follow.flag = 0
     session.commit()
-    return follow.flag
+    return 0
 
 
 ## GetFollow
@@ -60,4 +68,30 @@ async def GetFollow(user_id):
         return [follow.followed for follow in user]
 
 
-
+#参考## GetPetInfo
+# @router.get(path="/user_info/info/{user_id}")
+# async def GetPetInfo(user_id: str):
+#     result = handle_db.GetPetInfo(user_id)
+#     ###########
+#     if result == -1:
+#         return -1
+#     else:
+#         return {
+#             "name": result[0],
+#             "comment": result[1],
+#     }
+    ###########
+    # 成功していればGetIconを呼び出す
+    # if result == -1:
+    #     return -1
+    # else:
+    #     data = result
+    #     icon = image_db.GetIcon(user_id)
+    #     if icon == -1:
+    #         return -1
+    #     else:
+    #         return {
+    #             "name": data[0],
+    #             "comment": data[1],
+    #             "icon": icon
+    #         }
