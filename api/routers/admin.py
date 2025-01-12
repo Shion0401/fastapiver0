@@ -1,14 +1,14 @@
 # swaggerでデバッグしてませんごめんなさい
 # 通報されてないんですx
 
-from fastapi import FastAPI, Depends, Path, HTTPException
+from fastapi import APIRouter, FastAPI, Depends, Path, HTTPException
 import api.models.models as models
 from fastapi.middleware.cors import CORSMiddleware
 import api.cruds.admin as handle_db
 import datetime
 
 app = FastAPI()
-
+router = APIRouter()
 origins = ["*"]
 
 app.add_middleware(
@@ -24,7 +24,7 @@ app.add_middleware(
 
 
 ## AdminLogin
-@app.get(path="/login")
+@router.get(path="/login")
 async def AdminLogin(admin_email: str, admin_password: str):
     ## GetConfirmConbination
     result = handle_db.GetConfirmConbination(admin_email, admin_password)
@@ -37,7 +37,7 @@ async def AdminLogin(admin_email: str, admin_password: str):
 
 
 ## GetViolationUser
-@app.get(path="/ViolationUser")
+@router.get(path="/ViolationUser")
 async def GetViolationUser():
     result = await handle_db.GetViolationUser()
     if result == 1:
@@ -49,7 +49,7 @@ async def GetViolationUser():
     
     
 ## GetViolationUserInfo
-@app.get(path="/ViolationUser/{user_id}")
+@router.get(path="/ViolationUser/{user_id}")
 async def GetViolationUserInfo(user_id: str):
     result = await handle_db.GetViolationUserInfo(user_id)
     if result == -1:
@@ -61,7 +61,7 @@ async def GetViolationUserInfo(user_id: str):
     
 
 ## DeleteViolationUser
-@app.delete(path="/delete/{user_id}")
+@router.delete(path="/delete/{user_id}")
 async def DeleteViolationUser(user_id: str):
     result = await handle_db.DeleteViolationUser(user_id)
     if result == -1:

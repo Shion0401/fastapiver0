@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, Path, HTTPException
+from fastapi import APIRouter, FastAPI, Depends, Path, HTTPException
 import api.models.models as models
 from fastapi.middleware.cors import CORSMiddleware
 # import api.cruds.get_user as handle_db
@@ -6,7 +6,7 @@ import api.cruds.user_post as handle_db
 import datetime
 
 app = FastAPI()
-
+router = APIRouter()
 origins = ["*"]
 
 app.add_middleware(
@@ -23,7 +23,7 @@ app.add_middleware(
 # GetPostImage
 
 ## Post
-@app.post(path="/post")
+@router.post(path="/post")
 async def Post(user_id: str, title: str, caption: str):
     result = handle_db.Post(user_id, title, caption)
     if result == 0:
@@ -35,7 +35,7 @@ async def Post(user_id: str, title: str, caption: str):
    
 
 ## GetOnesPost
-@app.get(path="/post/get/{user_id}")
+@router.get(path="/post/get/{user_id}")
 async def GetOnesPost(user_id: str):
     result = handle_db.GetOnesPost(user_id)
     if result == 1:
@@ -47,7 +47,7 @@ async def GetOnesPost(user_id: str):
 
     
 ## GetNewPost p13
-@app.get(path="/post/new")
+@router.get(path="/post/new")
 async def GetNewPost():
     result = handle_db.GetNewPost()
     if not result:  # 空のリストやNoneの場合
@@ -59,7 +59,7 @@ async def GetNewPost():
 
 
 ## DeletePost 
-@app.delete(path="/post/{user_id}/{post_id}")
+@router.delete(path="/post/{user_id}/{post_id}")
 async def DeletePost(user_id: str, post_id: str):
     result = handle_db.DeletePost(user_id, post_id)
     if result == 1:
@@ -71,7 +71,7 @@ async def DeletePost(user_id: str, post_id: str):
     
 
 # GoodCount
-@app.get(path="/post/goodcount/{post_id}")
+@router.get(path="/post/goodcount/{post_id}")
 async def GoodCount(post_id: str):
     print("post")
     result = await handle_db.GoodCount(post_id)
@@ -84,7 +84,7 @@ async def GoodCount(post_id: str):
     
 
 ## Good
-@app.put(path="/post/good/{post_id}")
+@router.put(path="/post/good/{post_id}")
 async def Good(post_id: str):
     result = await handle_db.GoodCount(post_id)
     if result == -1:

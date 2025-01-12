@@ -1,11 +1,11 @@
-from fastapi import FastAPI, Depends, Path, HTTPException
+from fastapi import APIRouter, FastAPI, Depends, Path, HTTPException
 import api.models.models as models
 from fastapi.middleware.cors import CORSMiddleware
 import api.cruds.corp_info as handle_db
 import datetime
 
 app = FastAPI()
-
+router = APIRouter()
 origins = ["*"]
 
 app.add_middleware(
@@ -23,7 +23,7 @@ app.add_middleware(
 
 
 ## RegisterCorpInfo
-@app.post(path="/register")
+@router.post(path="/register")
 async def RegisterCorpInfo(corpname: str, email: str, manager: str):
     result = await handle_db.RegisterCorpInfo(corpname, email, manager)
     if result == -1:
@@ -35,7 +35,7 @@ async def RegisterCorpInfo(corpname: str, email: str, manager: str):
 
 
 ## GetCorpName
-# @app.get(path="/corpname")
+# @router.get(path="/corpname")
 # async def GetCorpName(user_email: str, user_password: str):
 #     result = handle_db.GetConfirmConbination(user_email, user_password)
 #     if result == 1:
@@ -47,7 +47,7 @@ async def RegisterCorpInfo(corpname: str, email: str, manager: str):
     
     
 ## GetCorpInfo
-@app.get(path="/corpinfo/{corp_id}")
+@router.get(path="/corpinfo/{corp_id}")
 async def GetCorpInfo(corp_id: str):
     result = await handle_db.GetCorpInfo(corp_id)
     if result == -1:
@@ -59,7 +59,7 @@ async def GetCorpInfo(corp_id: str):
     
 
 ## DeleteCorpInfo
-@app.delete(path="/corp/delete/{corp_id}")
+@router.delete(path="/corp/delete/{corp_id}")
 async def DeleteCorpInfo(corp_id: str):
     result = await handle_db.DeleteCorpInfo(corp_id)
     if result == -1:
