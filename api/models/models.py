@@ -30,7 +30,6 @@ class User(base):
     email = Column(VARCHAR(30))
     password = Column(VARCHAR(64))
     comment = Column(VARCHAR(100))
-    # status = Column(VARCHAR(255))
     image = Column(VARCHAR(255))
     post = relationship("Post", back_populates="user")
     report = relationship("Report", back_populates="user")
@@ -48,6 +47,7 @@ class Post(base):
     caption = Column(VARCHAR(50))
     create_date_time = Column(DATETIME)
     goodcount = Column(INT, default=0)
+    image = Column(VARCHAR(255))
     user_id = Column(CHAR(36), ForeignKey("user.id"))  # 型を一致させる
     user = relationship("User", back_populates="post")
 

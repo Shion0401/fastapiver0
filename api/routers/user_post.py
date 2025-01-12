@@ -1,7 +1,7 @@
-from fastapi import APIRouter, FastAPI, Depends, Path, HTTPException
+from fastapi import APIRouter, FastAPI, Depends, Path, HTTPException, Query
 import api.models.models as models
 from fastapi.middleware.cors import CORSMiddleware
-# import api.cruds.get_user as handle_db
+import api.cruds.images as image_db
 import api.cruds.user_post as handle_db
 import datetime
 
@@ -17,82 +17,97 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 一旦放置
-# DeletePostImage
-# InsertPostImage
-# GetPostImage
 
 ## Post
-@router.post(path="/user_post/post")
-async def Post(user_id: str, title: str, caption: str):
-    result = handle_db.Post(user_id, title, caption)
-    if result == 0:
-        return {
-            "status": "OK",
-            "data": result
-        }
-    raise HTTPException(status_code=404, detail="Query Error!!")
-   
+@router.post(path="/post")
+async def Post(user_id: str, image: str, title: str = Query(None), caption: str = Query(None)):
+    postid = handle_db.Post(user_id, title, caption)
+    return postid
+    # if postid == -1:
+    #     return -1
+    # InsertPostImageを呼び出す
+    # result = image_db.InsertPostImage(postid, image)
+    # return result
 
 ## GetOnesPost
-@router.get(path="/user_post/post/get/{user_id}")
+@router.get(path="/post/get/{user_id}")
 async def GetOnesPost(user_id: str):
-    result = handle_db.GetOnesPost(user_id)
-    if result == 1:
-        raise HTTPException(status_code=404, detail="Query Error!!")
-    return {
-        "status": "OK",
-        "data": result
-    }
-
-    
-## GetNewPost p13
-@router.get(path="/user_post/post/new")
+    result = await handle_db.GetOnesPost(user_id)
+    if result == -1:
+        return -1
+    posts = [
+        {
+            "title": post.title,
+            "caption": post.caption,
+            "goodcount": post.goodcount,
+            "postimage": post.image
+        }
+        for post in result
+    ]
+    return {"posts": posts}
+    # GetPostImageを呼び出す
+    # if result == -1:
+    #     return -1
+    # posts = [
+    #     {
+    #         "title": post.title,
+    #         "caption": post.caption,
+    #         "goodcount": post.goodcount,
+    #         "image": image_db.GetPostImage(post.image)
+    #     }
+    #     for post in result
+    # ]
+    # return {"posts": posts}
+ 
+## GetNewPost
+@router.get(path="/post/new")
 async def GetNewPost():
-    result = handle_db.GetNewPost()
-    if not result:  # 空のリストやNoneの場合
-        raise HTTPException(status_code=404, detail="No posts found.")
-    return {
-        "status": "OK",
-        "data": result
-    }
-
+    result = await handle_db.GetNewPost()
+    if result == -1:
+        return -1
+    posts = [
+        {
+            "title": post.title,
+            "caption": post.caption,
+            "goodcount": post.goodcount,
+            "postid": post.image
+        }
+        for post in result
+    ]
+    return {"posts": posts}
+    # GetPostImageを呼び出す
+    # if result == -1:
+    #     return -1
+    # posts = [
+    #     {
+    #         "title": post.title,
+    #         "caption": post.caption,
+    #         "goodcount": post.goodcount,
+    #         "image": image_db.GetPostImage(post.image)
+    #     }
+    #     for post in result
+    # ]
+    # return {"posts": posts}
+ 
 
 ## DeletePost 
-@router.delete(path="/user_post/post/{user_id}/{post_id}")
+@router.delete(path="/post/delete/{user_id}/{post_id}")
 async def DeletePost(user_id: str, post_id: str):
-    result = handle_db.DeletePost(user_id, post_id)
-    if result == 1:
-        raise HTTPException(status_code=404, detail="Query Error!!")
-    return {
-        "status": "OK",
-        "data": result
-    }
-    
+    # DeletePostImageを呼び出す
+    # result = await image_db.DeletePostImage(user_id, post_id)
+    # if result == -1:
+    #     return -1
+    result = await handle_db.DeletePost(user_id, post_id)
+    return result
 
 # GoodCount
-@router.get(path="/user_post/post/goodcount/{post_id}")
+@router.get(path="/post/goodcount/{post_id}")
 async def GoodCount(post_id: str):
-    print("post")
     result = await handle_db.GoodCount(post_id)
-    if result == -1:
-        raise HTTPException(status_code=404, detail="Query Error!!")
-    return {
-        "status": "OK",
-        "data": result
-    }  
-    
+    return result
 
 ## Good
-@router.put(path="/user_post/post/good/{post_id}")
+@router.put(path="/post/good/{post_id}")
 async def Good(post_id: str):
-    result = await handle_db.GoodCount(post_id)
-    if result == -1:
-        raise HTTPException(status_code=404, detail="Query Error!!")
     result = await handle_db.Good(post_id)
-    if result == -1:
-        raise HTTPException(status_code=404, detail="Query Error!!")
-    return {
-        "status": "OK",
-        "data": result
-    }
+    return result

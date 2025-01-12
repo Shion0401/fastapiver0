@@ -2,6 +2,7 @@ from fastapi import APIRouter, FastAPI, Depends, Path, HTTPException, Query
 import api.models.models as models
 from fastapi.middleware.cors import CORSMiddleware
 import api.cruds.user_info as handle_db
+import api.cruds.images as handle_db
 import datetime
 
 app = FastAPI()
@@ -65,7 +66,7 @@ async def GetPetInfo(user_id: str):
     #     return -1
     # else:
     #     data = result
-    #     icon = handle_db.GetIcon(user_id)
+    #     icon = image_db.GetIcon(user_id)
     #     if icon == -1:
     #         return -1
     #     else:
@@ -107,7 +108,7 @@ async def ChangePetInfo(user_id: str, user_name: str = Query(None), user_comment
     # 成功したらChangeIconも
     # if result == -1:
     #     return result
-    # icon = handle_db.ChangeIcon(user_id, user_icon)
+    # icon = image_db.ChangeIcon(user_id, user_icon)
     # return result  
 
 ## DeleteUserAccount
@@ -115,6 +116,10 @@ async def ChangePetInfo(user_id: str, user_name: str = Query(None), user_comment
 async def DeleteUserAccount(user_id: str, user_email: str, user_password: str):
     ## GetConfirmConbination
     result = await handle_db.GetConfirmConbination(user_email, user_password)
+    if result == -1:
+        return result
+    # DeleteIconを呼び出す
+    result = await handle_db.DeleteIcon(user_id)
     if result == -1:
         return result
     result = await handle_db.DeleteUserAccount(user_id)

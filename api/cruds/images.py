@@ -7,7 +7,13 @@ import datetime
 
 sys.dont_write_bytecode = True
 
+## user_info
 # InsertIcon
 # GetIcon
 # ChangeIcon
-# DeleteIcon
+# DeleteIcon(useridからimageをとってくる必要がある)
+
+## user_post
+# DeletePostImage(postidとuseridからimageをとってくる必要がある)
+# InsertPostImage
+# GetPostImage
