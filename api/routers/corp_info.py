@@ -23,7 +23,7 @@ app.add_middleware(
 
 
 ## RegisterCorpInfo
-@router.post(path="/register")
+@router.post(path="corp_info/register")
 async def RegisterCorpInfo(corpname: str, email: str, manager: str):
     result = await handle_db.RegisterCorpInfo(corpname, email, manager)
     if result == -1:
@@ -35,7 +35,7 @@ async def RegisterCorpInfo(corpname: str, email: str, manager: str):
 
 
 ## GetCorpName
-# @router.get(path="/corpname")
+# @router.get(path="corp_info/corpname")
 # async def GetCorpName(user_email: str, user_password: str):
 #     result = handle_db.GetConfirmConbination(user_email, user_password)
 #     if result == 1:
@@ -47,7 +47,7 @@ async def RegisterCorpInfo(corpname: str, email: str, manager: str):
     
     
 ## GetCorpInfo
-@router.get(path="/corpinfo/{corp_id}")
+@router.get(path="corp_info/corpinfo/{corp_id}")
 async def GetCorpInfo(corp_id: str):
     result = await handle_db.GetCorpInfo(corp_id)
     if result == -1:
@@ -59,7 +59,7 @@ async def GetCorpInfo(corp_id: str):
     
 
 ## DeleteCorpInfo
-@router.delete(path="/corp/delete/{corp_id}")
+@router.delete(path="corp_info/corp/delete/{corp_id}")
 async def DeleteCorpInfo(corp_id: str):
     result = await handle_db.DeleteCorpInfo(corp_id)
     if result == -1:

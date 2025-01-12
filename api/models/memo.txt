@@ -1,46 +1,56 @@
--- userテーブルの作成
-CREATE TABLE `user` (
-    `id` CHAR(36) NOT NULL PRIMARY KEY,
-    `name` VARCHAR(10),
-    `email` VARCHAR(30),
-    `password` VARCHAR(64),
-    `comment` VARCHAR(100)
+-- Followlist テーブル
+CREATE TABLE followlist (
+    following CHAR(36) NOT NULL,
+    followed CHAR(36) NOT NULL,
+    flag BOOLEAN DEFAULT TRUE,
+    PRIMARY KEY (following, followed),
+    FOREIGN KEY (following) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (followed) REFERENCES user(id) ON DELETE CASCADE
 );
 
+-- User テーブル
+CREATE TABLE user (
+    id CHAR(36) PRIMARY KEY,
+    name VARCHAR(10),
+    email VARCHAR(30),
+    password VARCHAR(64),
+    comment VARCHAR(100),
+    image VARCHAR(255)
+);
+
+-- Post テーブル
 CREATE TABLE post (
     id CHAR(36) PRIMARY KEY,
     title VARCHAR(17),
     caption VARCHAR(50),
     create_date_time DATETIME,
-    goodcount INTEGER DEFAULT 0,
+    goodcount INT DEFAULT 0,
     user_id CHAR(36),
-    FOREIGN KEY (user_id) REFERENCES user(id)
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
-CREATE TABLE `report` (
-   `id` CHAR(36) NOT NULL PRIMARY KEY,
-   `times` INT DEFAULT 0,
-   `update_date_time` DATETIME,
-   `user_id` CHAR(36),
-   FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+-- Report テーブル
+CREATE TABLE report (
+    id CHAR(36) PRIMARY KEY,
+    times INT DEFAULT 0,
+    update_date_time DATETIME,
+    user_id CHAR(36),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
-CREATE TABLE `corpinfo` (
-   `id` CHAR(36) NOT NULL PRIMARY KEY,
-   `corpname` VARCHAR(30),
-   `email` VARCHAR(30),
-   `manager` VARCHAR(30)
+-- Admin テーブル
+CREATE TABLE admin (
+    id CHAR(36) PRIMARY KEY,
+    name VARCHAR(10),
+    email VARCHAR(30),
+    password VARCHAR(64)
 );
 
-CREATE TABLE `followlist` (
-    `following` CHAR(36) NOT NULL,
-    `followed` CHAR(36) NOT NULL,
-    PRIMARY KEY (`following`, `followed`),
-    FOREIGN KEY (`following`) REFERENCES `user` (`id`),
-    FOREIGN KEY (`followed`) REFERENCES `user` (`id`)
+-- CorpInfo テーブル
+CREATE TABLE corpinfo (
+    id CHAR(36) PRIMARY KEY,
+    corpname VARCHAR(30),
+    email VARCHAR(30),
+    manager VARCHAR(30),
+    image VARCHAR(255)
 );
-
-
-54687bb1-2606-4b66-9ebc-b9aeeac27b35
-7df7c8b5-20c6-49c8-a9c3-20558e0cfd51
-fda424fd-efd9-4796-9c19-fd6eaff75619

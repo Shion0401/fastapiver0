@@ -31,7 +31,7 @@ class User(base):
     password = Column(VARCHAR(64))
     comment = Column(VARCHAR(100))
     # status = Column(VARCHAR(255))
-    # image = Column(VARCHAR(255))
+    image = Column(VARCHAR(255))
     post = relationship("Post", back_populates="user")
     report = relationship("Report", back_populates="user")
     following = relationship("Followlist", foreign_keys="[Followlist.following]", back_populates="user_following")
@@ -89,7 +89,7 @@ class CorpInfo(base):
     email = Column(VARCHAR(30))
     manager = Column(VARCHAR(30))
     # url = Column(VARCHAR(128))
-    # image = Column(VARCHAR(255))
+    image = Column(VARCHAR(255))
 
     def __init__(self):
         self.id = str(uuid.uuid4())

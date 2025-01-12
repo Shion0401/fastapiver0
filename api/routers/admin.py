@@ -24,7 +24,7 @@ app.add_middleware(
 
 
 ## AdminLogin
-@router.get(path="/login")
+@router.get(path="admin/login")
 async def AdminLogin(admin_email: str, admin_password: str):
     ## GetConfirmConbination
     result = handle_db.GetConfirmConbination(admin_email, admin_password)
@@ -37,7 +37,7 @@ async def AdminLogin(admin_email: str, admin_password: str):
 
 
 ## GetViolationUser
-@router.get(path="/ViolationUser")
+@router.get(path="admin/ViolationUser")
 async def GetViolationUser():
     result = await handle_db.GetViolationUser()
     if result == 1:
@@ -49,7 +49,7 @@ async def GetViolationUser():
     
     
 ## GetViolationUserInfo
-@router.get(path="/ViolationUser/{user_id}")
+@router.get(path="admin/ViolationUser/{user_id}")
 async def GetViolationUserInfo(user_id: str):
     result = await handle_db.GetViolationUserInfo(user_id)
     if result == -1:
@@ -61,7 +61,7 @@ async def GetViolationUserInfo(user_id: str):
     
 
 ## DeleteViolationUser
-@router.delete(path="/delete/{user_id}")
+@router.delete(path="admin/delete/{user_id}")
 async def DeleteViolationUser(user_id: str):
     result = await handle_db.DeleteViolationUser(user_id)
     if result == -1:
