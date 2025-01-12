@@ -68,7 +68,7 @@ async def GetFollow(user_id):
         return [follow.followed for follow in user]
 
 
-#参考## GetPetInfo
+# ## GetPetInfo
 # @router.get(path="/user_info/info/{user_id}")
 # async def GetPetInfo(user_id: str):
 #     result = handle_db.GetPetInfo(user_id)

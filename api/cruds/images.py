@@ -17,3 +17,10 @@ sys.dont_write_bytecode = True
 # DeletePostImage(postidとuseridからimageをとってくる必要がある)
 # InsertPostImage
 # GetPostImage
+
+# ChangeAdImage
+# DeleteAdImage
+# InsertAdImage
+
+
+# GetAdImage

@@ -20,8 +20,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 一旦放置
-# GetAdImage
 
 
 ## AdminLogin

@@ -33,6 +33,5 @@ async def Follow(following: str, followed: str):
 @router.get(path="/follow/{user_id}")
 async def GetFollow(user_id: str):
     result = await handle_db.GetFollow(user_id)
-    # result = await GetPetInfo(result)
     return result
     

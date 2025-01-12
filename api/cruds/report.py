@@ -10,11 +10,16 @@ sys.dont_write_bytecode = True
 ## GetReport
 async def GetReport(user_id):
     session = databases.create_new_session()
+    user_exists = session.query(models.User).\
+                    filter(models.User.id == user_id).\
+                    first()
+    if user_exists == None:
+        return -1
     report = session.query(models.Report).\
                 filter(models.Report.user_id == user_id).\
                 first()         
     if report == None:
-        return 'None'
+        return 0
     return report.times
 
 
@@ -27,7 +32,7 @@ async def InsertReport(user_id):
     report.user_id = user_id
     session.add(report)
     session.commit()
-    return report.times
+    return 0
     
     
 ## UpdateReport
@@ -41,7 +46,7 @@ async def UpdateReport(user_id):
     report.times += 1
     report.update_date_time = datetime.datetime.now()
     session.commit()
-    return report.times
+    return 0
 
     
 ## DeleteReport
