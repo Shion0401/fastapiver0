@@ -20,7 +20,7 @@ async def GetReport(user_id):
                 first()         
     if report == None:
         return 0
-    return report.times
+    return report.times, report.update_date_time
 
 
 ## InsertReport
