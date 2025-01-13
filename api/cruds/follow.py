@@ -55,7 +55,6 @@ async def ChangeFlag(following, followed, check):
     session.commit()
     return 0
 
-
 ## GetFollow name comment icon
 async def GetFollow(user_id):
     session = databases.create_new_session()
