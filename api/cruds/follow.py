@@ -56,42 +56,20 @@ async def ChangeFlag(following, followed, check):
     return 0
 
 
-## GetFollow
+## GetFollow name comment icon
 async def GetFollow(user_id):
     session = databases.create_new_session()
     user = session.query(models.Followlist).\
                 filter(models.Followlist.following == user_id).\
-                all()           
+                all()      
     if user == None:
         return -1
-    else:
-        return [follow.followed for follow in user]
-
-
-# ## GetPetInfo
-# @router.get(path="/user_info/info/{user_id}")
-# async def GetPetInfo(user_id: str):
-#     result = handle_db.GetPetInfo(user_id)
-#     ###########
-#     if result == -1:
-#         return -1
-#     else:
-#         return {
-#             "name": result[0],
-#             "comment": result[1],
-#     }
-    ###########
-    # 成功していればGetIconを呼び出す
-    # if result == -1:
-    #     return -1
-    # else:
-    #     data = result
-    #     icon = image_db.GetIcon(user_id)
-    #     if icon == -1:
-    #         return -1
-    #     else:
-    #         return {
-    #             "name": data[0],
-    #             "comment": data[1],
-    #             "icon": icon
-    #         }
+    user_data = []
+    for follow in user:
+        followed_user = session.query(models.User).filter(models.User.id == follow.followed).first()
+        if followed_user:
+            user_data.append({
+                "name": followed_user.name,
+                "comment": followed_user.comment,
+            })
+    return user_data

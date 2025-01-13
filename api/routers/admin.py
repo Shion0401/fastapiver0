@@ -36,38 +36,20 @@ async def AdminLogin(admin_email: str, admin_password: str):
     result = await handle_db.GetConfirmConbination(admin_email, admin_password)
     return result
 
-
 ## GetViolationUser
 @router.get(path="/admin/ViolationUser")
 async def GetViolationUser():
     result = await handle_db.GetViolationUser()
-    if result == 1:
-        raise HTTPException(status_code=404, detail="Query Error!!")
-    return {
-        "status": "OK",
-        "data": result
-    }
-    
+    return result    
     
 ## GetViolationUserInfo
 @router.get(path="/admin/ViolationUser/{user_id}")
 async def GetViolationUserInfo(user_id: str):
     result = await handle_db.GetViolationUserInfo(user_id)
-    if result == -1:
-        raise HTTPException(status_code=404, detail="Query Error!!")
-    return {
-        "status": "OK",
-        "data": result
-    }
-    
+    return result    
 
 ## DeleteViolationUser
 @router.delete(path="/admin/delete/{user_id}")
 async def DeleteViolationUser(user_id: str):
     result = await handle_db.DeleteViolationUser(user_id)
-    if result == -1:
-        raise HTTPException(status_code=404, detail="Query Error!!")
-    return {
-        "status": "OK",
-        "data": result
-    }
+    return result

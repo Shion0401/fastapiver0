@@ -33,9 +33,18 @@ class User(base):
     image = Column(VARCHAR(255))
     post = relationship("Post", back_populates="user")
     report = relationship("Report", back_populates="user")
-    following = relationship("Followlist", foreign_keys="[Followlist.following]", back_populates="user_following")
-    followed_by = relationship("Followlist", foreign_keys="[Followlist.followed]", back_populates="user_followed")
-
+    following = relationship(
+        "Followlist",
+        foreign_keys="[Followlist.following]",
+        back_populates="user_following",
+        cascade="all, delete-orphan",
+    )
+    followed_by = relationship(
+        "Followlist",
+        foreign_keys="[Followlist.followed]",
+        back_populates="user_followed",
+        cascade="all, delete-orphan",
+    )
     def __init__(self):
         self.id = str(uuid.uuid4())
         

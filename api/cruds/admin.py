@@ -53,13 +53,17 @@ async def GetConfirmConbination(admin_email, admin_password):
 ## GetViolationUser
 async def GetViolationUser():
     session = databases.create_new_session()
-    report = session.query(models.Report).\
+    reports = session.query(models.Report).\
                 filter(models.Report.times > 1).\
                 all()                    
-    if report == None:
+    if reports == None:
         return -1
     else:
-        return report.user_id, report.times
+        violation_data = [
+        {"user_id": item.user_id, "name": item.name, "times": item.times}
+        for item in reports
+    ]
+        return {"violation_list": violation_data}
 
 
 ## GetViolationUserInfo
@@ -67,22 +71,29 @@ async def GetViolationUserInfo(user_id):
     session = databases.create_new_session()
     user = session.query(models.User).\
                 filter(models.User.id == user_id).\
+                first()  
+    report = session.query(models.Report).\
+                filter(models.Report.user_id == user_id).\
                 first()                    
     if user == None:
         return -1
     else:
-        return user
+        return user.name, user.email, report.times
 
 
 ## DeleteViolationUser
-async def DeleteViolationUser(cuser_id):
+async def DeleteViolationUser(user_id):
     session = databases.create_new_session()
     user = session.query(models.User).\
                 filter(models.User.id == user_id).\
                 first()
+    report = session.query(models.Report).\
+                filter(models.Report.user_id == user_id).\
+                first()
     if user == None:
         return -1
     session.delete(user)
+    session.delete(report)
     session.commit()
     return 0
 
