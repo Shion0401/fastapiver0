@@ -20,19 +20,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+## AdminRegister
+@router.post(path="/admin/account/register")
+async def AdminRegister(admin_name: str, admin_email: str, admin_password: str):
+    ## GetCheckEmailDuplication
+    result = await handle_db.GetCheckEmailDuplication(admin_email)
+    if result == 0:
+        result = await handle_db.AdminRegister(admin_name, admin_email, admin_password)
+        return result
 
 ## AdminLogin
 @router.get(path="/admin/login")
 async def AdminLogin(admin_email: str, admin_password: str):
     ## GetConfirmConbination
-    result = handle_db.GetConfirmConbination(admin_email, admin_password)
-    if result == -1:
-        raise HTTPException(status_code=404, detail="Query Error!!")
-    return {
-        "status": "OK",
-        "data": result
-    }
+    result = await handle_db.GetConfirmConbination(admin_email, admin_password)
+    return result
 
 
 ## GetViolationUser

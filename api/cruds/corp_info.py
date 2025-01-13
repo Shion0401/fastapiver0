@@ -17,7 +17,7 @@ async def RegisterCorpInfo(corpname, email, manager):
     corp_info.manager = manager
     session.add(corp_info)
     session.commit()
-    return 0
+    return corp_info.id
 
 ## GetCorpName
 # async def GetCorpName(user_email):

@@ -17,19 +17,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-
 ## RegisterCorpInfo
-@router.post(path="/corp_info/register")
+@router.post(path="/corpinfo/register")
 async def RegisterCorpInfo(corpname: str, email: str, manager: str):
     result = await handle_db.RegisterCorpInfo(corpname, email, manager)
     if result == -1:
-        raise HTTPException(status_code=404, detail="Query Error!!")
-    return {
-        "status": "OK",
-        "data": result
-    }
-
+        return result
+    return result
+    # InserAdImageを呼び出す
+    # result = await image_db.InserAdImage(result)
+    # return result
 
 ## GetCorpName
 # @router.get(path="/corp_info/corpname")
@@ -44,24 +41,21 @@ async def RegisterCorpInfo(corpname: str, email: str, manager: str):
     
     
 ## GetCorpInfo
-@router.get(path="/corp_info/corpinfo/{corp_id}")
+@router.get(path="/corpinfo/{corp_id}")
 async def GetCorpInfo(corp_id: str):
     result = await handle_db.GetCorpInfo(corp_id)
-    if result == -1:
-        raise HTTPException(status_code=404, detail="Query Error!!")
-    return {
-        "status": "OK",
-        "data": result
-    }
-    
+    return result
+    # GetAdImageを呼び出す
+    # result = await image_db.GetAdImage(result)
+    # return result
 
 ## DeleteCorpInfo
-@router.delete(path="/corp_info/corp/delete/{corp_id}")
+@router.delete(path="/corpinfo/delete/{corp_id}")
 async def DeleteCorpInfo(corp_id: str):
     result = await handle_db.DeleteCorpInfo(corp_id)
     if result == -1:
-        raise HTTPException(status_code=404, detail="Query Error!!")
-    return {
-        "status": "OK",
-        "data": result
-    }
+        return result
+    return result
+    # DeleteAdImageを呼び出す
+    # result = await image_db.DeleteAdImage(corp_id)
+    # return result
